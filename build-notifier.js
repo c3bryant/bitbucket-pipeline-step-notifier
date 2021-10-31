@@ -4,7 +4,7 @@ const PIPE_VARS = require('./.pipe-vars.json')
 
 const NOTIFIER_WEBHOOK = process.argv[2]
 const BUILD_FINAL_STEP = process.argv[3] === 'final' ? true : false
-const BUILD_SUCCESS = PIPE_VARS.BITBUCKET_EXIT_CODE === 0 ? true : false 
+const BUILD_SUCCESS = PIPE_VARS.BITBUCKET_EXIT_CODE === '0' ? true : false 
 
 const buildNotify = async () => {
 	try {
