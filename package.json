@@ -1,0 +1,11 @@
+{
+	"name": "bitbucket-pipeline-step-notifier",
+	"version": "1.0.0",
+	"description": "Bitbucket pipeline step notifier",
+	"main": "build-notifier.js",
+	"dependencies": {
+		"node-fetch": "2.6.1"
+	},
+	"author": "Charles Bryant",
+	"license": "MIT"
+}
