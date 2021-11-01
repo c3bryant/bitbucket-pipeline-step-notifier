@@ -12,6 +12,12 @@ const buildNotify = async () => {
 		// 1. Build errors on any step
 		// 2. Build is on a final step and succeeds
 
+		// Exit if required NOTIFIER_WEBHOOK repository variable has been set in the user's bitbucket repo
+		if (!NOTIFIER_WEBHOOK) {
+			console.log('Error: Required repository variable `NOTIFIER_WEBHOOK` not set')
+			return
+		}
+
 		// Exit if a non-final step succeeds
 		if (!BUILD_FINAL_STEP && BUILD_SUCCESS) {
 			return
@@ -49,7 +55,7 @@ const buildNotify = async () => {
 }
 
 const messageHeader = () => {
-	return '### Build Pipeline Notifier\n\n<table border="0" style="margin:16px">'
+	return '<table border="0" style="margin:16px">'
 }
 
 const buildRepo = () => {
