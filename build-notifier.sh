@@ -1,9 +1,35 @@
 #!/bin/sh
 set -e
-echo "Start: build-notifier.sh"
+
+# Change dir to build notifier
+cd $HOME/bitbucket-pipeline-step-notifier
+
+# Install nodejs
+installNodejs() {
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    nvm install 14
+    nvm install-latest-npm
+}
+
+# Install nodejs if not found
+if ! which node > /dev/null; then
+    echo "Installing nodejs"
+    installNodejs
+fi
+
+# Upgrade nodejs if major version < 14
+NODE_MAJOR_VERSION=$(node --version | sed 's/v//g' | sed 's/\..*$//g')
+if [ $NODE_MAJOR_VERSION -lt '14' ]; then
+    echo "Upgrading nodejs"
+    installNodejs
+fi
 
 # Install jq
 apt-get update && apt-get install -y jq
+
+# Install build notifier dependencies
+npm i
 
 # Write pipeline vars
 PIPE_VARS=$( jq -n \
@@ -37,10 +63,5 @@ PIPE_VARS=$( jq -n \
 
 echo $PIPE_VARS > ./.pipe-vars.json
 
-# Install dependencies
-npm i
-
 # Run nodejs build notifier
-node ./build-notifier.js $NOTIFIER_WEBHOOK $1
-
-echo "End: build-notifier.sh"
+node build-notifier.js $NOTIFIER_WEBHOOK $1

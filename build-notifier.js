@@ -36,8 +36,8 @@ const buildNotify = async () => {
 		teamsMessage += buildTime()
 		teamsMessage += messageFooter()
 
-		// Send teams message and log success
-		console.log('Sending Teams notification for ' + PIPE_VARS.BITBUCKET_REPO_FULL_NAME + ' build #' + PIPE_VARS.BITBUCKET_BUILD_NUMBER)
+		// Send notification and log success
+		console.log('Sending build status notification for ' + PIPE_VARS.BITBUCKET_REPO_FULL_NAME + ' (#' + PIPE_VARS.BITBUCKET_BUILD_NUMBER + ')')
 		const notifyResp = await fetch(NOTIFIER_WEBHOOK, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -55,7 +55,7 @@ const buildNotify = async () => {
 }
 
 const messageHeader = () => {
-	return '<table border="0" style="margin:16px">'
+	return '<table border="0">'
 }
 
 const buildRepo = () => {
